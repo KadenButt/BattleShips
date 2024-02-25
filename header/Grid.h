@@ -16,7 +16,7 @@ class Grid {
 
 private:
 
-    int totalShips = 5;
+    int totalShips = 0;
     Ship ships[5];
     char grid[100] =
             {
@@ -40,9 +40,11 @@ public:
     void displayGrid();
     int getTotalShips();
     void shoot(Vector pos);
-    bool validateShipSize();
     void shipSunk();
     Ship* getShipsPointer();
+    bool validateShipSize(int size);
+    bool validateShipPos(Vector pos, int size, char dir);
+    void placeShip(Vector pos, int size, char dir);
 
 
 

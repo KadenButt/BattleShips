@@ -18,7 +18,7 @@ private:
 
 public:
     Ship();
-    Ship(Vector pos, char dir, int size);
+    Ship(Vector pos, int size, char dir);
     Vector getStartPosition();
     char getDirection();
     int getSize();

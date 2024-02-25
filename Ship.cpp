@@ -7,7 +7,7 @@
 
 Ship::Ship(){}
 
-Ship::Ship(Vector pos, char dir, int size)
+Ship::Ship(Vector pos, int size, char dir)
 {
     this->startPosition = pos;
     this->direction = dir;
