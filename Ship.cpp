@@ -38,6 +38,7 @@ int Ship::getHealth()
 void Ship::hit()
 {
     this->health--;
+
 }
 
 bool Ship::isSunk()
