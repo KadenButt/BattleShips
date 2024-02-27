@@ -10,10 +10,9 @@
 #include <iostream>
 
 
-bool isValidInput();
+
 
 bool isChar(char i);
-
 
 bool isInt(char i);
 
