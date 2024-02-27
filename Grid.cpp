@@ -5,7 +5,9 @@
 #include "header/Grid.h"
 #include "header/Vector.h"
 #include "header/Ship.h"
+#include "header/Validation.h"
 #include <iostream>
+
 
 
 bool *getShipsPointer();
@@ -40,16 +42,18 @@ void Grid::displayGridLine(int line)
     //column
     if(line == 0)
     {
-        std::cout << "   0  1  2  3  4  5  6  7  8  9" << std::endl;
+       std::cout << "0  1  2  3  4  5  6  7  8  9" ;
     }
 
-    std::cout <<  line;
 
+      std::cout <<  line;
+//
+//    //goes each column
     for(int i = 0; i < 10; i++)
     {
         std::cout << "  " << *(getGridPointer() + i + 10*line);
     }
-    std::cout << std::endl;
+
 
 }
 
@@ -63,8 +67,15 @@ void Grid::incrementTotalShips(int i)
     this->totalShips+=i;
 }
 
-void Grid::shoot(Vector pos)
+
+//TODO clean up
+bool Grid::shoot(Vector pos)
 {
+    //check pos is valid input
+    if(!validateShoot(pos))
+    {
+        return false;
+    }
     //miss shot
     if(*(getGridPointer() + pos.x  + 10*pos.y) == ' ')
     {
@@ -73,7 +84,7 @@ void Grid::shoot(Vector pos)
     //hit ship
     else if(*(getGridPointer() + pos.x  + 10*pos.y) == '*')
     {
-        for(int i = 0; i < getTotalShips(); i++)
+        for(int i = 0; i < 5; i++)
         {
             Ship& s = *(getShipsPointer() + i);
             //check horizontally
@@ -81,6 +92,7 @@ void Grid::shoot(Vector pos)
             //check both vertically and horzontially for a hit
             if(pos.x >= s.getStartPosition().x && pos.x <= s.getStartPosition().x+s.getSize() && pos.y == s.getStartPosition().y || pos.y >= s.getStartPosition().y && pos.y <= s.getStartPosition().y+s.getSize() && pos.x == s.getStartPosition().x)
             {
+                *(getGridPointer() + pos.x  + 10*pos.y) = 'X';
                 s.hit();
                 if(s.isSunk())
                 {
@@ -88,18 +100,12 @@ void Grid::shoot(Vector pos)
                     std::cout<<"Your Ship has been sunk" << std::endl;
                 }
                 break;
-
-
-
             }
-
-            //checks space vertically
 
         }
 
     }
-
-
+    return false;
 }
 
 Ship* Grid::getShipsPointer()
@@ -107,8 +113,11 @@ Ship* Grid::getShipsPointer()
     return this->shipsptr;
 }
 
+
 bool Grid::validateShoot(Vector pos)
 {
+
+
     if(pos.x < 0 || pos.x >  9 || pos.y < 0 || pos.y > 9)
     {
         return false;
@@ -126,6 +135,9 @@ bool Grid::validateShipSize(int size)
 {
     Ship s;
 
+    //check if value type is int
+
+
     if(size < 0 || size > 5)
     {
         return  false;
@@ -141,10 +153,15 @@ bool Grid::validateShipSize(int size)
     }
 
     return true;
+
+
 }
 
 bool Grid::validateShipPos(Vector pos, int size, char dir)
 {
+    //validate data type
+
+
     //horizontal
     if(dir == 'h')
     {
@@ -185,10 +202,10 @@ bool Grid::validateShipPos(Vector pos, int size, char dir)
     return false;
 }
 
-void Grid::placeShip(Vector pos, int size, char dir)
+bool Grid::placeShip(Vector pos, int size, char dir)
 {
 
-    if(validateShipSize(size) && validateShipPos(pos, size, dir))
+    if(validateShipPos(pos, size, dir))
     {
         *(getShipsPointer() + getTotalShips()) = Ship(pos, size, dir);
         incrementTotalShips(1);
@@ -210,5 +227,8 @@ void Grid::placeShip(Vector pos, int size, char dir)
             }
         }
 
+        return true;
     }
+
+    return false;
 }

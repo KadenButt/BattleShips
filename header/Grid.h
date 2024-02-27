@@ -41,12 +41,12 @@ public:
     void displayGridLine(int line);
     int getTotalShips();
     void incrementTotalShips(int i);
-    void shoot(Vector pos);
+    bool shoot(Vector pos);
     Ship* getShipsPointer();
     bool validateShoot(Vector pos);
     bool validateShipSize(int size);
     bool validateShipPos(Vector pos, int size, char dir);
-    void placeShip(Vector pos, int size, char dir);
+    bool placeShip(Vector pos, int size, char dir);
 
 
 
